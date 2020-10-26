@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainTest {
     public static void main(String[] args) throws AWTException, InterruptedException {
-        ParseDataUtil parseDataUtil = ParseDataUtil.getInstance(new File("C:\\Users\\Suimg\\AppData\\LocalLow\\7th Beat Games\\A Dance of Fire and Ice\\【极难】Adofai Custom Level - 佐藤直之,L.E.D. - Chrono Diver -PENDULUMs- by 阿峦\\Chrono Diver -PENDULUMs-.adofai"));
+        ParseDataUtil parseDataUtil = ParseDataUtil.getInstance(new File("D:\\code\\adofai-helper\\src\\main\\resources\\parseTest\\cry.adofai"));
         System.out.println(parseDataUtil.getDumpJSON());
         System.out.println(parseDataUtil.getDelayJSON());
         System.out.println(parseDataUtil.getReadyDelay());
