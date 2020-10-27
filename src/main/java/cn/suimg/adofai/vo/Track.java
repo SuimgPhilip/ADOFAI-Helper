@@ -26,6 +26,11 @@ public class Track {
     private String path;
 
     /**
+     * 角度
+     */
+    private Integer angle;
+
+    /**
      * 延迟
      */
     private Integer delay;

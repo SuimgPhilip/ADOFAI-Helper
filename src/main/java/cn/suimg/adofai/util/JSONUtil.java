@@ -15,7 +15,7 @@ public class JSONUtil {
     public static SerializerFeature[] filters = {
 //            WriteNullListAsEmpty,
 //            WriteNullStringAsEmpty,
-//            PrettyFormat,
+            PrettyFormat,
 //            MapSortField,
     };
 

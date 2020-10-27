@@ -16,6 +16,7 @@ import org.springframework.util.FileCopyUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 解析工具类
@@ -38,6 +39,11 @@ public class ParseDataUtil {
     private final List<Integer> delayList = new ArrayList<>();
 
     /**
+     * 配置列表
+     */
+    private final Map<String,Object> settings;
+
+    /**
      * 轨道列表
      */
     private final List<String> paths;
@@ -54,8 +60,6 @@ public class ParseDataUtil {
      * 是否逆向，默认是顺时针。旋转一次取反
      */
     private boolean inverse = false;
-
-
 
     /**
      * 获取当前工具类的实例
@@ -82,10 +86,15 @@ public class ParseDataUtil {
                 //有的文件前部分会有三个字节的BOM信息 跳过
                 jsonObject = JSONObject.parseObject(new String(bytes,3,bytes.length - 3));
             }
+            settings = JSONObject.toJavaObject(jsonObject.getJSONObject("settings"), Map.class);
 
             //读取基础的BPM
             bpm = jsonObject.getJSONObject("settings").getDouble("bpm");
-            readyBeat = jsonObject.getJSONObject("settings").getInteger("countdownTicks");
+            try {
+                readyBeat = jsonObject.getJSONObject("settings").getInteger("countdownTicks");
+            }catch (NullPointerException ignored){
+                readyBeat = 3;
+            }
 
             //解析路径信息
             String pathData = jsonObject.getString("pathData").replaceAll("(.)", "$1\n");
@@ -143,6 +152,8 @@ public class ParseDataUtil {
         setSpeed(source.getFloor());
         isTwirl(source);
         int angle = getAngle(source, target);
+        if(angle == -1)
+            return;
         int delay =  (int) (60 / bpm / 180 * angle * 1000);
         delayList.add(delay);
         source.setDelay(delay);
@@ -198,6 +209,13 @@ public class ParseDataUtil {
         Angle currentAngle = parseAngle(sourceItem.getPath());
         Angle targetAngle = parseAngle(targetItem.getPath());
         Angle mirrorAngle = AngleConfig.mirrorMapping.get(currentAngle);
+
+        if(currentAngle == MID_SPLIT)
+            mirrorAngle = parseAngle(trackList.get(sourceItem.getFloor() - 2).getPath());
+
+        if(targetAngle == MID_SPLIT)
+            return -1;
+
         Integer angle = null;
         Set<Map.Entry<Integer, List<Angle[]>>> entries = AngleConfig.angleMapping.entrySet();
         for (Map.Entry<Integer, List<Angle[]>> entry : entries) {
@@ -242,6 +260,22 @@ public class ParseDataUtil {
      */
     public List<Integer> getDelayList() {
         return delayList;
+    }
+
+    /**
+     * 获取配置信息
+     * @return
+     */
+    public Map<String,Object> getSettings(){
+        return settings;
+    }
+
+    /**
+     * 获取轨道列表
+     * @return
+     */
+    public List<Track> getTrackList() {
+        return trackList.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     /**
