@@ -148,5 +148,18 @@ public enum Angle {
 
     }
 
+    public static Angle parseAngle(int angle){
+        for(Angle angleObj : values()){
+            if(angleObj.getAngle() == angle){
+                return angleObj;
+            }
+        }
+        return UNKNOWN;
+    }
 
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

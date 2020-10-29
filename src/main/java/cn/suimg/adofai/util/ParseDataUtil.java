@@ -53,7 +53,9 @@ public class ParseDataUtil {
      */
     private Double bpm;
 
-
+    /**
+     * 准备节拍
+     */
     private int readyBeat = 0;
 
     /**
@@ -74,6 +76,7 @@ public class ParseDataUtil {
      * 私有构造方法
      * @param file
      */
+    @SuppressWarnings("unchecked")
     private ParseDataUtil(File file){
         try{
             //读取存档文件
@@ -88,6 +91,9 @@ public class ParseDataUtil {
             }
             settings = JSONObject.toJavaObject(jsonObject.getJSONObject("settings"), Map.class);
 
+            if(settings.get("artistPermission") == null)
+                throw new ParseException("The current version of the level is not supported, please open in the game and save to upgrade the version");
+
             //读取基础的BPM
             bpm = jsonObject.getJSONObject("settings").getDouble("bpm");
             try {
@@ -97,8 +103,9 @@ public class ParseDataUtil {
             }
 
             //解析路径信息
-            String pathData = jsonObject.getString("pathData").replaceAll("(.)", "$1\n");
-            paths = Arrays.asList(pathData.split("\n"));
+            paths = Arrays.asList(jsonObject.getString("pathData").replaceAll("(.)", "$1\n").split("\n"));
+            if(paths.contains("5") || paths.contains("7"))
+                throw new ParseException("Currently does not support pentagon and heptagon analysis");
 
             //解析特效
             jsonObject.getJSONArray("actions").forEach(object0 -> {
@@ -157,6 +164,7 @@ public class ParseDataUtil {
         int delay =  (int) (60 / bpm / 180 * angle * 1000);
         delayList.add(delay);
         source.setDelay(delay);
+        source.setAngle(angle);
         System.out.println(String.format("轨道ID:%d,从:%s,到:%s,旋转:%b,角度:%d,BPM:%f,延迟:%dms",source.getFloor(),source.getPath(),target.getPath(),inverse,angle,bpm,delay));
     }
 

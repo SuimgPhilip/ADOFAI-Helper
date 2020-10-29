@@ -82,7 +82,6 @@ public final class AngleConfig {
                 new Angle[]{H,U},
                 new Angle[]{G,T},
 
-
                 new Angle[]{U,J},
                 new Angle[]{T,R},
                 new Angle[]{J,M},
@@ -96,10 +95,16 @@ public final class AngleConfig {
                 new Angle[]{N,H}
         ));
 
+        /**
+         * 所有75°角 顺时针方向
+         */
         put(75,Arrays.asList(
                 new Angle[]{G,E},
+
                 new Angle[]{J,C},
+
                 new Angle[]{B,Z},
+
                 new Angle[]{N,Q}
         ));
 
@@ -195,8 +200,11 @@ public final class AngleConfig {
          */
         put(165,Arrays.asList(
                 new Angle[]{Q,M},
+
                 new Angle[]{E,F},
+
                 new Angle[]{C,H},
+
                 new Angle[]{Z,T}
         ));
 
@@ -229,22 +237,25 @@ public final class AngleConfig {
          * 所有360°角 顺时针方向
          */
         put(360,Arrays.asList(
-           new Angle[]{L,L},
-           new Angle[]{H,H},
-           new Angle[]{Q,Q},
-           new Angle[]{G,G},
-           new Angle[]{U,U},
-           new Angle[]{T,T},
-           new Angle[]{E,E},
-           new Angle[]{J,J},
-           new Angle[]{R,R},
-           new Angle[]{M,M},
-           new Angle[]{C,C},
-           new Angle[]{B,B},
-           new Angle[]{D,D},
-           new Angle[]{F,F},
-           new Angle[]{Z,Z},
-           new Angle[]{N,N}
+                new Angle[]{L,L},
+                new Angle[]{H,H},
+                new Angle[]{Q,Q},
+                new Angle[]{G,G},
+
+                new Angle[]{U,U},
+                new Angle[]{T,T},
+                new Angle[]{E,E},
+                new Angle[]{J,J},
+
+                new Angle[]{R,R},
+                new Angle[]{M,M},
+                new Angle[]{C,C},
+                new Angle[]{B,B},
+
+                new Angle[]{D,D},
+                new Angle[]{F,F},
+                new Angle[]{Z,Z},
+                new Angle[]{N,N}
         ));
     }};
 
