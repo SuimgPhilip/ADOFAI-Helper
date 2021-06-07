@@ -16,7 +16,7 @@ public class JSONUtil {
 //            WriteNullListAsEmpty,
 //            WriteNullStringAsEmpty,
             PrettyFormat,
-//            MapSortField,
+            MapSortField,
     };
 
     /**

@@ -161,11 +161,13 @@ public class ParseDataUtil {
         int angle = getAngle(source, target);
         if(angle == -1)
             return;
+        if(angle == 0 )
+            angle = 360;
         int delay =  (int) (60 / bpm / 180 * angle * 1000);
         delayList.add(delay);
         source.setDelay(delay);
         source.setAngle(angle);
-        System.out.println(String.format("轨道ID:%d,从:%s,到:%s,旋转:%b,角度:%d,BPM:%f,延迟:%dms",source.getFloor(),source.getPath(),target.getPath(),inverse,angle,bpm,delay));
+        System.out.printf("轨道ID:%d,从:%s,到:%s,旋转:%b,角度:%d,BPM:%f,延迟:%dms%n",source.getFloor(),source.getPath(),target.getPath(),inverse,angle,bpm,delay);
     }
 
     /**
@@ -251,6 +253,7 @@ public class ParseDataUtil {
         return Math.abs(inverse ? 360 - angle : angle);
     }
 
+
     /**
      * 设置后面的BPM
      * @param skip
@@ -291,7 +294,7 @@ public class ParseDataUtil {
      * @return
      */
     public int getReadyDelay(){
-        return (int) (60 / trackList.get(0).getBpm() * readyBeat * 2 * 1000);
+        return  (60 / 173 * 8 * 1000);
     }
 
     /**
@@ -308,5 +311,33 @@ public class ParseDataUtil {
      */
     public String getDelayJSON(){
         return JSONUtil.toString(delayList);
+    }
+
+
+    public void parseSetSpeedAction(){
+        Double tempSpeed = 0D;
+        for(int i = 0; i < trackList.size(); i++){
+            List<Action> actions = trackList.get(i).getActions();
+            for(Action action:actions){
+                if(action instanceof SetSpeed){
+                    SetSpeed setSpeed = (SetSpeed) action;
+                    Double newBPM = 0D;
+                    switch (setSpeed.getSpeedType()){
+                        case "Bpm":
+                            tempSpeed = setSpeed.getBeatsPerMinute();
+                            System.out.println(JSONUtil.toString(setSpeed));
+                            break;
+                        case "Multiplier":
+                            tempSpeed *= setSpeed.getBpmMultiplier();
+                            System.out.println(JSONUtil.toString(new SetSpeed(i+1,"Bpm",tempSpeed,1D)));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
+        }
     }
 }

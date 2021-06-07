@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * 统计工具类
+ * @author Suimg
  */
 public class StatisticsUtil {
 

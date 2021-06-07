@@ -1,5 +1,8 @@
 package cn.suimg.adofai.enmus;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 轨道对应的角度
  */
@@ -156,6 +159,12 @@ public enum Angle {
         }
         return UNKNOWN;
     }
+
+
+    public static List<Angle> getAllAngles(){
+        return Arrays.asList(Arrays.copyOfRange(values(), 0, values().length - 2));
+    }
+
 
 
     @Override
